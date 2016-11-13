@@ -1,5 +1,5 @@
 """Install texclean and texcleaner."""
-# Copyright (c) 2013 Andrew Dawson
+# Copyright (c) 2013-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@ from distutils.core import setup
 
 
 # Extract the package version from the library initialization script.
-for line in open('lib/texclean/__init__.py').readlines():
+for line in open('texclean/__init__.py').readlines():
     if line.startswith('__version__'):
         exec(line.strip())
 
@@ -30,8 +30,7 @@ setup(name='texclean',
       version=__version__,
       description='Clean output files from LaTeX compilations.',
       author='Andrew Dawson',
-      author_email='dawson@atm.ox.ac.uk',
+      author_email='andrew.dawson@physics.ox.ac.uk',
       packages=['texclean'],
-      package_dir={'': 'lib'},
       scripts=['bin/texcleaner.py'],
      )

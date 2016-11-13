@@ -1,0 +1,38 @@
+language: python
+
+sudo: false
+
+env:
+    global:
+        - PIP_PACKAGES="versioneer"
+        - CONDA_PACKAGES="pytest mock"
+    matrix:
+        - NAME="Python 2.7"
+          PYTHON_VERSION=2.7
+        - NAME="Python 3.4"
+          PYTHON_VERSION=3.4
+        - NAME="Python 3.5"
+          PYTHON_VERSION=3.5
+
+install:
+    # Install Miniconda so we can use it to manage dependencies:
+    - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - export PATH="$HOME/miniconda/bin:$PATH"
+    - hash -r
+    # COnfigure conda:
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update conda
+    - conda info -a
+    # Create a test environment with the required Python version:
+    - conda create -n test-environment python=$PYTHON_VERSION
+    - source activate test-environment
+    # Install required dependencies:
+    - conda install ${CONDA_PACKAGES}
+    - pip install ${PIP_PACKAGES}
+
+script:
+    - pytest
+
+notifications:
+  email: false

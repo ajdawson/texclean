@@ -20,17 +20,18 @@
 # THE SOFTWARE.
 from distutils.core import setup
 
+try:
+    import versioneer
+except ImportError:
+    raise ImportError('versioneer is required for installation')
 
-# Extract the package version from the library initialization script.
-for line in open('texclean/__init__.py').readlines():
-    if line.startswith('__version__'):
-        exec(line.strip())
 
 setup(name='texclean',
-      version=__version__,
+      version=versioneer.get_version(),
       description='Clean output files from LaTeX compilations.',
       author='Andrew Dawson',
       author_email='andrew.dawson@physics.ox.ac.uk',
       packages=['texclean'],
       scripts=['bin/texcleaner.py'],
+      cmdclass=versioneer.get_cmdclass()
      )

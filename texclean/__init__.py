@@ -23,8 +23,10 @@ from __future__ import absolute_import
 from .rc import cleaned_extensions, DEFAULT_EXTENSIONS
 from .cleaner import clean_document
 
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
 
-__version__ = '1.0.0'
 
 __all__ = ['DEFAULT_EXTENSIONS',
            'cleaned_extensions',

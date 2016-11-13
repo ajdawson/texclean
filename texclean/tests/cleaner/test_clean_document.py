@@ -22,7 +22,6 @@ from __future__ import absolute_import
 import os
 
 from mock import Mock, patch
-from nose.tools import assert_equal, assert_false
 
 from texclean import clean_document
 
@@ -39,13 +38,13 @@ def test_default():
         with patch('os.remove') as patched_os_remove:
             deleted = clean_document(document_name, extensions)
             # os.remove should be called once for each file deleted
-            assert_equal(patched_os_remove.call_count, len(expected_deleted))
+            assert patched_os_remove.call_count == len(expected_deleted)
             for filename in expected_deleted:
                 # os.remove should be called for every file deleted
                 patched_os_remove.assert_any_call(filename)
     # the list of deleted files should match the expected list
-    assert_equal(sorted(deleted), sorted(expected_deleted))
-    
+    assert sorted(deleted) == sorted(expected_deleted)
+
 
 def test_dry_run():
     document_name = './test_document.tex'
@@ -57,6 +56,6 @@ def test_dry_run():
         with patch('os.remove') as patched_os_remove:
             deleted = clean_document(document_name, extensions, dry_run=True)
             # os.remove should not be called in a dry run
-            assert_false(patched_os_remove.called)
+            assert not patched_os_remove.called
     # the list of deleted files should still be correct though
-    assert_equal(sorted(deleted), sorted(expected_deleted))
+    assert sorted(deleted) == sorted(expected_deleted)

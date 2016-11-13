@@ -19,10 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 from __future__ import absolute_import
+
 import os
 from tempfile import mkstemp
 
-from nose.tools import assert_equal, raises
+import pytest
 
 from texclean import cleaned_extensions
 
@@ -34,7 +35,7 @@ EXPECTED_DEFAULT = set(['aux', 'bbl', 'blg', 'dvi', 'log', 'lot', 'lof',
 def test_default_extensions():
     expected = EXPECTED_DEFAULT
     actual = set(cleaned_extensions())
-    assert_equal(expected, actual)
+    assert expected == actual
 
 
 def test_added_extensions():
@@ -44,7 +45,7 @@ def test_added_extensions():
     expected = EXPECTED_DEFAULT.union(set(['xyz', '123']))
     actual = set(cleaned_extensions(rcfile=filename))
     os.remove(filename)
-    assert_equal(expected, actual)
+    assert expected == actual
 
 
 def test_removed_extensions():
@@ -54,7 +55,7 @@ def test_removed_extensions():
     expected = EXPECTED_DEFAULT - set(['toc', 'pdf'])
     actual = set(cleaned_extensions(rcfile=filename))
     os.remove(filename)
-    assert_equal(expected, actual)
+    assert expected == actual
 
 
 def test_added_and_removed_extensions():
@@ -64,17 +65,13 @@ def test_added_and_removed_extensions():
     expected = EXPECTED_DEFAULT.union(set(['xyz'])) - set(['pdf'])
     actual = set(cleaned_extensions(rcfile=filename))
     os.remove(filename)
-    assert_equal(expected, actual)
+    assert expected == actual
 
 
-@raises(ValueError)
 def test_invalid_rc():
     fd, filename = mkstemp()
     with open(filename, 'w') as rcfile:
         rcfile.write('pdf : nodelete')
-    try:
+    with pytest.raises(ValueError):
         deleted = cleaned_extensions(rcfile=filename)
-    except:
-        raise
-    finally:
-        os.remove(filename)
+    os.remove(filename)

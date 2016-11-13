@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """Delete files resulting from LaTeX compilations."""
-# Copyright (c) 2013 Andrew Dawson
+# Copyright (c) 2013-2016 Andrew Dawson
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -62,7 +62,7 @@ def main(argv=None):
     ap.add_argument('docname', nargs='+',
                     help='delete compilation files for the named document')
     args = ap.parse_args(argv[1:])
-    
+
     try:
         delete = args.delete.split(',')
         keep = args.keep.split(',')
@@ -78,7 +78,7 @@ def main(argv=None):
             if args.summarize:
                 _summarize(docname, deleted)
         return 0
-    except ValueError, err:
+    except ValueError as err:
         print('error: {!s}'.format(e), file=sys.stderr)
         print('  use -h or --help for help', file=sys.stderr)
         return 1
